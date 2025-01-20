@@ -1,0 +1,44 @@
+﻿@using MongoDbProject.Dtos.CategoryDtos
+@model List<ResultCategoryDto>
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Areas/Admin/Views/AdminLayout/Index.cshtml";
+    int count = 0;
+}
+<div class="pd-20 card-box mb-30">
+    <div class="clearfix mb-20">
+        <div class="pull-left">
+            <h4 class="text-blue h4">Kategori Tablosu</h4>
+            <p>Kategorilerinizle Alakalı İşlemlerinizi buradan yapabilirsiniz.</p>
+        </div>
+        
+    </div>
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Resimi</th>
+                <th scope="col">Kategori Adı</th>
+                <th scope="col"></th>
+                <th scope="col"></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                count++;
+
+                <tr>
+                    <td>@count</td>
+                    <td><img src="@item.ImageUrl" style="width:70px;height:70px;" /></td>
+                    <td>@item.CategoryName</td>
+                    <td><a href="/Admin/Category/DeleteCategory/@item.CategoryID" class="btn btn-outline-danger">Sil</a></td>
+                    <td><a href="/Admin/Category/UpdateCategory/@item.CategoryID" class="btn btn-outline-success">Güncelle</a></td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    <a href="/Admin/Category/CreateCategory/" class="btn btn-outline-info">Ekleme</a>
+</div>
+
+
