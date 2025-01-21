@@ -1,0 +1,44 @@
+﻿@using MongoDbProject.Dtos.SellingDtos
+@model List<ResultSellingDto>
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Areas/Admin/Views/AdminLayout/Index.cshtml";
+    int count = 0;
+}
+<div class="pd-20 card-box mb-30">
+    <div class="clearfix mb-20">
+        <div class="pull-left">
+            <h4 class="text-blue h4">Satışlar Tablosu</h4>
+        </div>
+    </div>
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Resimi</th>
+                <th scope="col">Ürün Adı</th>
+                <th scope="col">Ürün Sayısı</th>
+                <th scope="col">Ürün Fiyatı</th>
+                <th scope="col">Toplam Ürün Fiyatı</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                count++;
+
+                <tr>
+                    <td>@count</td>
+                    <td><img src="@item.ProductImageUrl" style="width:70px;height:70px;" /></td>
+                    <td>@item.Product.ProductName</td>
+                    <td>@item.Count</td>
+                    <td>@item.Price.ToString("N2") TL</td> <!-- 2 ondalık basamak -->
+                    <td>@item.TotalPrice.ToString("N2") TL</td> <!-- 2 ondalık basamak -->
+                </tr>
+            }
+        </tbody>
+    </table>
+    <a href="/Admin/Selling/CreateSelling/" class="btn btn-outline-info">Ekleme</a>
+</div>
+
+

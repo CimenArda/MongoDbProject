@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using MongoDB.Driver;
+using MongoDbProject.Dtos.ProductDtos;
 using MongoDbProject.Dtos.SellingDtos;
 using MongoDbProject.Entities;
 using MongoDbProject.Settings;
@@ -9,17 +10,19 @@ namespace MongoDbProject.Services.SellingServices
     public class SellingService : ISellingService
     {
         private readonly IMongoCollection<Selling> _SellingCollection;
+        private readonly IMongoCollection<Product> _ProductCollection;
         private readonly IMapper _mapper;
 
-        public SellingService(IMapper mapper, IDatabaseSettings _databaseSettings)
-        {
-            var client = new MongoClient(_databaseSettings.ConnectionString);
-            var database = client.GetDatabase(_databaseSettings.DatabaseName);
-            _SellingCollection = database.GetCollection<Selling>(_databaseSettings.SellingCollectionName);
-            _mapper = mapper;
-        }
+		public SellingService(IMapper mapper, IDatabaseSettings _databaseSettings)
+		{
+			var client = new MongoClient(_databaseSettings.ConnectionString);
+			var database = client.GetDatabase(_databaseSettings.DatabaseName);
+			_SellingCollection = database.GetCollection<Selling>(_databaseSettings.SellingCollectionName);
+			_ProductCollection = database.GetCollection<Product>(_databaseSettings.ProductCollectionName);
+			_mapper = mapper;
+		}
 
-        public async Task CreateSellingAsync(CreateSellingDto createSellingDto)
+		public async Task CreateSellingAsync(CreateSellingDto createSellingDto)
         {
             var value = _mapper.Map<Selling>(createSellingDto);
             await _SellingCollection.InsertOneAsync(value);
@@ -32,9 +35,15 @@ namespace MongoDbProject.Services.SellingServices
 
         public async Task<List<ResultSellingDto>> GetAllSellingAsync()
         {
-            var Selling = await _SellingCollection.Find(x => true).ToListAsync();
-            return _mapper.Map<List<ResultSellingDto>>(Selling);
-        }
+			var values = await _SellingCollection.Find(x => true).ToListAsync();
+
+			foreach (var item in values)
+			{
+				item.Product = await _ProductCollection.Find<Product>(x => x.ProductID == item.ProductID).FirstAsync();
+			}
+
+			return _mapper.Map<List<ResultSellingDto>>(values);
+		}
 
         public async Task<GetByIdSellingDto> GetByIdSellingAsync(string id)
         {
