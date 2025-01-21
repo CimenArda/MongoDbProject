@@ -9,6 +9,7 @@ namespace MongoDbProject.Services.ProductServices
     public class ProductService : IProductService
     {
         private readonly IMongoCollection<Product> _ProductCollection;
+        private readonly IMongoCollection<Category> _CategoryCollection;
         private readonly IMapper _mapper;
 
         public ProductService(IMapper mapper, IDatabaseSettings _databaseSettings)
@@ -16,6 +17,7 @@ namespace MongoDbProject.Services.ProductServices
             var client = new MongoClient(_databaseSettings.ConnectionString);
             var database = client.GetDatabase(_databaseSettings.DatabaseName);
             _ProductCollection = database.GetCollection<Product>(_databaseSettings.ProductCollectionName);
+			_CategoryCollection = database.GetCollection<Category>(_databaseSettings.CategoryCollectionName);
             _mapper = mapper;
         }
 
@@ -36,7 +38,19 @@ namespace MongoDbProject.Services.ProductServices
             return _mapper.Map<List<ResultProductDto>>(Product);
         }
 
-        public async Task<GetByIdProductDto> GetByIdProductAsync(string id)
+		public async Task<List<ResultProductWithCategoryDto>> GetAllProductWithCategoryAsync()
+		{
+			var values = await _ProductCollection.Find(x => true).ToListAsync();
+
+			foreach (var item in values)
+			{
+				item.Category = await _CategoryCollection.Find<Category>(x => x.CategoryID == item.CategoryID).FirstAsync();
+			}
+
+			return _mapper.Map<List<ResultProductWithCategoryDto>>(values);
+		}
+
+		public async Task<GetByIdProductDto> GetByIdProductAsync(string id)
         {
             var Product = await _ProductCollection.Find(x => x.ProductID == id).FirstOrDefaultAsync();
             return _mapper.Map<GetByIdProductDto>(Product);

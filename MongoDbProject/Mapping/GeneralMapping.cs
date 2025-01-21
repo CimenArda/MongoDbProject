@@ -21,6 +21,7 @@ namespace MongoDbProject.Mapping
             CreateMap<Product, CreateProductDto>().ReverseMap();
             CreateMap<Product, UpdateProductDto>().ReverseMap();
             CreateMap<Product, GetByIdProductDto>().ReverseMap();
+            CreateMap<Product, ResultProductWithCategoryDto>().ReverseMap();
 
 
             CreateMap<Feature, ResultFeatureDto>().ReverseMap();
