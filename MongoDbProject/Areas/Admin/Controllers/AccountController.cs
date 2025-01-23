@@ -39,6 +39,9 @@ namespace MongoDbProject.Areas.Admin.Controllers
 
             try
             {
+                user.ProfilePictureUrl = "Profil Resminizi Güncelleyin";
+                user.Description = "Açıklamanızı Güncelleyin";
+                user.Address = "Adresinizi Güncelleyin";
                 await _userService.RegisterUserAsync(user, password);
                 TempData["SuccessMessage"] = "Kayıt başarılı! Giriş yapabilirsiniz.";
                 return RedirectToAction("Login", "Account",new { areas = "Admin"});
