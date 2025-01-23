@@ -1,0 +1,44 @@
+﻿@using MongoDbProject.Entities
+
+@{
+    Layout = null;
+}
+
+@model ApplicationUser
+
+<h2>Kayıt Ol</h2>
+<form asp-action="Register" method="post">
+    <div>
+        <label for="UserName">Kullanıcı Adı</label>
+        <input type="text" asp-for="UserName" required />
+    </div>
+    <div>
+        <label for="Email">Email</label>
+        <input type="email" asp-for="Email" required />
+    </div>
+    <div>
+        <label for="FullName">Ad Soyad</label>
+        <input type="text" asp-for="FullName" required />
+    </div>
+    <div>
+        <label for="FullName">başlık</label>
+        <input type="text" asp-for="Title" required />
+    </div>
+    <div>
+        <label for="ProfilePictureUrl">Profil Resmi URL</label>
+        <input type="text" asp-for="ProfilePictureUrl" required />
+    </div>
+    <div>
+        <label for="Description">Açıklama</label>
+        <input type="text" asp-for="Description" required />
+    </div>
+    <div>
+        <label for="Address">Adres</label>
+        <input type="text" asp-for="Address" required />
+    </div>
+    <div>
+        <label for="Password">Şifre</label>
+        <input type="password" name="password" id="Password" required />
+    </div>
+    <button type="submit">Kayıt Ol</button>
+</form>
