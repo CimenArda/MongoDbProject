@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using MongoDbProject.Dtos.CategoryDtos;
 using MongoDbProject.Services.CategoryServices;
+using MongoDbProject.Services.ProductServices;
 
 namespace MongoDbProject.Areas.Admin.Controllers
 {
@@ -11,10 +12,11 @@ namespace MongoDbProject.Areas.Admin.Controllers
 	{
 
 		private readonly ICategoryService _categoryService;
-
-		public CategoryController(ICategoryService categoryService)
+		private readonly IProductService _productService; 
+		public CategoryController(ICategoryService categoryService, IProductService productService)
 		{
 			_categoryService = categoryService;
+			_productService = productService;
 		}
 
 		[Route("Index")]
@@ -68,6 +70,12 @@ namespace MongoDbProject.Areas.Admin.Controllers
 		}
 
 
+		[Route("GetProductByCategoryId/{id}")]
+		public async Task<IActionResult> GetProductByCategoryId(string id)
+		{
+			var products = await _productService.GetAllProductWithCategoryByCategoryIdAsync(id);
+			return View(products);
+		}
 
 
 

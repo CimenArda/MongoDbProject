@@ -50,6 +50,21 @@ namespace MongoDbProject.Services.ProductServices
 			return _mapper.Map<List<ResultProductWithCategoryDto>>(values);
 		}
 
+		public async Task<List<ResultProductWithCategoryDto>> GetAllProductWithCategoryByCategoryIdAsync(string id)
+		{
+			
+			var products = await _ProductCollection.Find(product => product.CategoryID == id).ToListAsync();
+
+			foreach (var product in products)
+			{
+				product.Category = await _CategoryCollection
+					.Find<Category>(category => category.CategoryID == product.CategoryID)
+					.FirstAsync();
+			}
+
+			return _mapper.Map<List<ResultProductWithCategoryDto>>(products);
+		}
+
 		public async Task<GetByIdProductDto> GetByIdProductAsync(string id)
         {
             var Product = await _ProductCollection.Find(x => x.ProductID == id).FirstOrDefaultAsync();
