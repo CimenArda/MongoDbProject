@@ -8,5 +8,6 @@ namespace MongoDbProject.Services.UserServices
         Task<ApplicationUser> GetUserByUsernameAsync(string username);
         Task<ApplicationUser> RegisterUserAsync(ApplicationUser user, string password);
         Task<bool> CheckPasswordAsync(ApplicationUser user, string password);
-    }
+		Task<ApplicationUser> UpdateUserAsync(string userId, ApplicationUser updatedUser);
+	}
 }

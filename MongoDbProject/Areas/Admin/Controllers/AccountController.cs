@@ -75,12 +75,67 @@ namespace MongoDbProject.Areas.Admin.Controllers
 
             // Giriş işlemi başarılı
             HttpContext.Session.SetString("UserId", user.ApplicationUserId);
-            return RedirectToAction("Profile", "Account");
+            return RedirectToAction("Profile", "Account", new { areas = "Admin" });
         }
 
+        [Route("Profile")]
+        public async Task<IActionResult> Profile()
+        {
+
+            var userId = HttpContext.Session.GetString("UserId");
+            if (string.IsNullOrEmpty(userId))
+            {
+                return RedirectToAction("Login", "Account");
+            }
+
+            var user = await _userService.GetUserByIdAsync(userId);
+            return View(user);
+
+        }
+
+		[Route("UpdateProfile")]
+		public async Task<PartialViewResult> UpdateProfile()
+		{
+			var userId = HttpContext.Session.GetString("UserId");
+			if (string.IsNullOrEmpty(userId))
+			{
+				return PartialView("_ErrorPartial", "Kullanıcı oturum açmamış.");
+			}
+
+			var user = await _userService.GetUserByIdAsync(userId);
+			if (user == null)
+			{
+				return PartialView("_ErrorPartial", "Kullanıcı bulunamadı.");
+			}
+
+			return PartialView("UpdateProfile", user);
+
+		}
+
+		[HttpPost]
+		[Route("UpdateProfile")]
+		public async Task<IActionResult> UpdateProfile(ApplicationUser user)
+		{
+			var existingUser = await _userService.GetUserByIdAsync(user.ApplicationUserId);
+			if (existingUser != null)
+			{
+				existingUser.FullName = user.FullName;
+				existingUser.ProfilePictureUrl = user.ProfilePictureUrl;
+				existingUser.UserName = user.UserName;
+				existingUser.Title = user.Title;
+				existingUser.Address = user.Address;
+				existingUser.Description = user.Description;
+				existingUser.Email = user.Email;
+
+				// UpdateUserAsync çağrısı için userId ve updatedUser parametrelerini geçiyoruz
+				await _userService.UpdateUserAsync(existingUser.ApplicationUserId, existingUser);
+
+				return RedirectToAction("Profile", "Account");
+			}
+
+			return View("Error");
+		}
 
 
-
-
-    }
+	}
 }

@@ -1,0 +1,49 @@
+﻿@using MongoDbProject.Entities
+@model ApplicationUser
+<div class="profile-setting">
+    <form method="post" asp-action="UpdateProfile" asp-controller="Account">
+        <ul class="profile-edit-list row">
+            <li class="weight-500 col-md-6">
+                <h4 class="text-blue h5 mb-20">Profil Bilgilerini Güncelle</h4>
+                <input type="hidden" asp-for="ApplicationUserId" />
+                <div class="form-group">
+                    <label>Ad-Soyad</label>
+                    <input class="form-control form-control-lg" asp-for="FullName" type="text">
+                </div>
+                <div class="form-group">
+                    <label>Ünvan</label>
+                    <input class="form-control form-control-lg" asp-for="Title" type="text">
+                </div>
+                <div class="form-group">
+                    <label>Adres</label>
+                    <textarea asp-for="Address" class="form-control"></textarea>
+                </div>
+            </li>
+            <li class="weight-500 col-md-6">
+                <h4 class="text-blue h5 mb-20">Profil Bilgilerini Güncelle</h4>
+
+                <div class="form-group">
+                    <label>Kullanıcı Adı:</label>
+                    <input class="form-control form-control-lg" asp-for="UserName" type="text">
+                </div>
+                <div class="form-group">
+                    <label>Email:</label>
+                    <input class="form-control form-control-lg" asp-for="Email" type="text">
+                </div>
+                <div class="form-group">
+                    <label>Açıklama</label>
+                    <textarea asp-for="Description" class="form-control"></textarea>
+                </div>
+            </li>
+        </ul>
+        <!-- Resim Yolu Input Ortalanmış -->
+        <div class="form-group text-center mx-auto" style="width: 50%; margin-top: -50px;">
+            <label>Resim Yolu:</label>
+            <input class="form-control form-control-lg" asp-for="ProfilePictureUrl" type="text">
+        </div>
+        <!-- Güncelle Butonu Ortalanmış -->
+        <div class="text-center" style="width: 50%; margin: 0 auto; margin-top: -10px;">
+            <button type="submit" class="btn btn-primary">Güncelle</button>
+        </div>
+    </form>
+</div>

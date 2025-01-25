@@ -39,5 +39,28 @@ namespace MongoDbProject.Services.UserServices
         {
             return BCrypt.Net.BCrypt.Verify(password, user.PasswordHash);
         }
-    }
+
+		public async Task<ApplicationUser> UpdateUserAsync(string userId, ApplicationUser updatedUser)
+		{
+			var filter = Builders<ApplicationUser>.Filter.Eq(user => user.ApplicationUserId, userId);
+			var update = Builders<ApplicationUser>.Update
+				.Set(user => user.UserName, updatedUser.UserName)
+				.Set(user => user.Email, updatedUser.Email)
+				.Set(user => user.FullName, updatedUser.FullName)
+				.Set(user => user.Title, updatedUser.Title)
+				.Set(user => user.Description, updatedUser.Description)
+				.Set(user => user.Address, updatedUser.Address)
+				.Set(user => user.ProfilePictureUrl, updatedUser.ProfilePictureUrl);
+
+			var result = await _userCollection.UpdateOneAsync(filter, update);
+
+			if (result.MatchedCount == 0)
+			{
+				return null; // Kullanıcı bulunamadı
+			}
+
+			return await GetUserByIdAsync(userId); // Güncellenmiş kullanıcı bilgilerini döndür
+		}
+
+	}
 }
