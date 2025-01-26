@@ -1,0 +1,42 @@
+﻿
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="en">
+ @await Component.InvokeAsync("_UILayoutHeadComponentPartial")
+  <body>
+
+    @await Component.InvokeAsync("_UILayoutSvgIconsComponentPartial")
+
+    <div class="preloader-wrapper">
+      <div class="preloader">
+      </div>
+    </div>
+
+    
+    
+  
+
+    <header>
+        @await Component.InvokeAsync("_UILayoutTopbarComponentPartial")
+        @await Component.InvokeAsync("_UILayoutTopCategoryListComponentPartial")
+
+      
+    </header>
+    
+
+    @RenderBody()
+    
+
+    
+
+    
+
+    @await Component.InvokeAsync("_UILayoutFooterComponentPartial")
+
+    @await Component.InvokeAsync("_UILayoutScriptComponentPartial")
+
+
+  </body>
+</html>
