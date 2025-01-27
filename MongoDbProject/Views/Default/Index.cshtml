@@ -5,3 +5,41 @@
 }
 
 
+<section class="py-3" style="background-image: url('/FoodMart-1.0.0/images/background-pattern.jpg');background-repeat: no-repeat;background-size: cover;">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+
+                <div class="banner-blocks">
+
+                    @await Component.InvokeAsync("_DefaultFeaturedComponentPartial")
+
+                    @await Component.InvokeAsync("_DefaultTopDiscountComponentPartial")
+
+
+
+                </div>
+                <!-- / Banner Blocks -->
+
+            </div>
+        </div>
+    </div>
+</section>
+
+
+
+@await Component.InvokeAsync("_DefaultCategoryComponentPartial")
+
+
+@await Component.InvokeAsync("_DefaultLast10ProductComponentPartial")
+
+@await Component.InvokeAsync("_DefaultDiscountComponentPartial")
+
+@await Component.InvokeAsync("_DefaultBestSellingComponentPartial")
+
+@await Component.InvokeAsync("_DefaultMailSendingComponentPartial")
+
+@await Component.InvokeAsync("_DefaultServicesComponentPartial")
+
+
+
