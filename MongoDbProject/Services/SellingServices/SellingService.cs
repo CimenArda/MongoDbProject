@@ -51,6 +51,24 @@ namespace MongoDbProject.Services.SellingServices
             return _mapper.Map<GetByIdSellingDto>(Selling);
         }
 
+        public async Task<List<ResultSellingDto>> GetTop8SellingProductsAsync()
+        {
+            // Satışları Count değerine göre azalan sırayla alıyoruz
+            var values = await _SellingCollection.Find(x => true)
+                                                  .SortByDescending(x => x.Count)
+                                                  .Limit(8)
+                                                  .ToListAsync();
+
+            // Ürün bilgilerini ilişkilendiriyoruz
+            foreach (var item in values)
+            {
+                item.Product = await _ProductCollection.Find<Product>(x => x.ProductID == item.ProductID).FirstOrDefaultAsync();
+            }
+
+            // Dönüşü DTO'ya dönüştürüp geri gönderiyoruz
+            return _mapper.Map<List<ResultSellingDto>>(values);
+        }
+
         public async Task UpdateSellingAsync(UpdateSellingDto updateSellingDto)
         {
             var value = _mapper.Map<Selling>(updateSellingDto);

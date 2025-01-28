@@ -1,12 +1,21 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using MongoDbProject.Services.SellingServices;
 
 namespace MongoDbProject.ViewComponents.DefaultViewComponents
 {
     public class _DefaultBestSellingComponentPartial : ViewComponent
     {
-        public IViewComponentResult Invoke()
+        private readonly ISellingService _sellingService;
+
+        public _DefaultBestSellingComponentPartial(ISellingService sellingService)
         {
-            return View();
+            _sellingService = sellingService;
+        }
+
+        public async Task<IViewComponentResult> InvokeAsync()
+        {
+            var values = await _sellingService.GetTop8SellingProductsAsync();
+            return View(values);
         }
     }
 }

@@ -1,12 +1,21 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using MongoDbProject.Services.CategoryServices;
 
 namespace MongoDbProject.ViewComponents.UILayoutViewComponents
 {
     public class _UILayoutTopCategoryListComponentPartial : ViewComponent
     {
-        public IViewComponentResult Invoke()
+        private readonly ICategoryService _categoryService;
+
+        public _UILayoutTopCategoryListComponentPartial(ICategoryService categoryService)
         {
-            return View();
+            _categoryService = categoryService;
+        }
+
+        public async Task<IViewComponentResult> InvokeAsync()
+        {
+            var values =await _categoryService.GetAllCategoryAsync();
+            return View(values);
         }
     }
 }

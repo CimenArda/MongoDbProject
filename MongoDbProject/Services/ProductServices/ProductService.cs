@@ -1,5 +1,7 @@
 ﻿using AutoMapper;
+using MongoDB.Bson;
 using MongoDB.Driver;
+using MongoDB.Driver.Linq;
 using MongoDbProject.Dtos.ProductDtos;
 using MongoDbProject.Entities;
 using MongoDbProject.Settings;
@@ -71,6 +73,29 @@ namespace MongoDbProject.Services.ProductServices
             return _mapper.Map<GetByIdProductDto>(Product);
         }
 
+        public async Task<List<ResultProductWithCategoryDto>> GetLast10ProductWithCategoryAsync()
+        {
+          
+            var values = await _ProductCollection
+                .Find(x => true)
+                .SortByDescending(x => x.ProductID) 
+                .Limit(10) 
+                .ToListAsync();
+
+         
+            foreach (var item in values)
+            {
+                item.Category = await _CategoryCollection
+                    .Find<Category>(x => x.CategoryID == item.CategoryID)
+                    .FirstOrDefaultAsync(); 
+            }
+
+           
+            return _mapper.Map<List<ResultProductWithCategoryDto>>(values);
+
+        }
+
+    
         public async Task UpdateProductAsync(UpdateProductDto updateProductDto)
         {
             var value = _mapper.Map<Product>(updateProductDto);

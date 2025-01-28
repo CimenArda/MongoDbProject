@@ -10,6 +10,7 @@ namespace MongoDbProject.Services.ProductServices
         Task DeleteProductAsync(string id);
         Task<GetByIdProductDto> GetByIdProductAsync(string id);
 		Task<List<ResultProductWithCategoryDto>> GetAllProductWithCategoryAsync();
+		Task<List<ResultProductWithCategoryDto>> GetLast10ProductWithCategoryAsync();
 		Task<List<ResultProductWithCategoryDto>> GetAllProductWithCategoryByCategoryIdAsync(string id);
 
 	}
