@@ -1,6 +1,5 @@
 ﻿<div class="container-fluid">
     <div class="row py-3 border-bottom">
-
         <div class="col-sm-4 col-lg-3 text-center text-sm-start">
             <div class="main-logo">
                 <a href="index.html">
@@ -11,15 +10,16 @@
 
         <div class="col-sm-6 offset-sm-2 offset-md-0 col-lg-5 d-none d-lg-block">
             <div class="search-bar row bg-light p-2 my-2 rounded-4">
-                <div class="col-md-4 d-none d-md-block">
-                </div>
+                <div class="col-md-4 d-none d-md-block"></div>
                 <div class="col-11 col-md-7">
-                    <form id="search-form" class="text-center" action="index.html" method="post">
-                        <input type="text" class="form-control border-0 bg-transparent" placeholder="Ürünleri Ara" />
+                    <form id="search-form" asp-action="Search" asp-controller="Product" method="get">
+                        <input type="text" class="form-control border-0 bg-transparent" placeholder="Ara..." name="query" id="search-input" />
                     </form>
                 </div>
                 <div class="col-1">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M21.71 20.29L18 16.61A9 9 0 1 0 16.61 18l3.68 3.68a1 1 0 0 0 1.42 0a1 1 0 0 0 0-1.39ZM11 18a7 7 0 1 1 7-7a7 7 0 0 1-7 7Z" /></svg>
+                    <svg id="search-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" style="cursor: pointer;">
+                        <path fill="currentColor" d="M21.71 20.29L18 16.61A9 9 0 1 0 16.61 18l3.68 3.68a1 1 0 0 0 1.42 0a1 1 0 0 0 0-1.39ZM11 18a7 7 0 1 1 7-7a7 7 0 0 1-7 7Z" />
+                    </svg>
                 </div>
             </div>
         </div>
@@ -29,7 +29,6 @@
                 <span class="fs-6 text-muted">Desteğe İhtiyacın mı var?</span>
                 <h5 class="mb-0">+905523455566</h5>
             </div>
-
             <ul class="d-flex justify-content-end list-unstyled m-0">
                 <li>
                     <a href="#" class="rounded-circle bg-light p-2 mx-1">
@@ -52,9 +51,16 @@
                     </a>
                 </li>
             </ul>
-
-
         </div>
-
     </div>
 </div>
+
+<script>
+    // SVG tıklama eventi
+    document.getElementById("search-icon").addEventListener("click", function () {
+        var query = document.getElementById("search-input").value;
+        if (query.trim() !== "") {
+            document.getElementById("search-form").submit(); // Formu gönder
+        }
+    });
+</script>

@@ -19,7 +19,16 @@ namespace MongoDbProject.Controllers
             return View(values);
         }
 
-
+        [HttpGet]
+        public async Task<IActionResult> Search(string query)
+        {
+            if (string.IsNullOrWhiteSpace(query))
+            {
+                return RedirectToAction("Index");
+            }
+            var searchResults = await _productService.SearchProductsAsync(query);
+            return View("Index", searchResults);
+        }
         public async Task<IActionResult> GetProducstByCategoryID(string id)
         {
             var values = await _productService.GetAllProductWithCategoryByCategoryIdAsync(id);

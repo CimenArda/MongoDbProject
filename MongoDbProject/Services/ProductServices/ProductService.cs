@@ -95,7 +95,24 @@ namespace MongoDbProject.Services.ProductServices
 
         }
 
-    
+        public async Task<List<ResultProductDto>> SearchProductsAsync(string query)
+        {
+            if (string.IsNullOrWhiteSpace(query))
+                return new List<ResultProductDto>();
+            var products = await _ProductCollection.AsQueryable()
+                .Where(product => product.ProductName.ToLower().Contains(query.ToLower()))
+                .ToListAsync();
+            var result = products.Select(product => new ResultProductDto
+            {
+                ProductID = product.ProductID,
+                ProductName = product.ProductName,
+                ProductPrice = product.ProductPrice,
+                ProductImageUrl = product.ProductImageUrl,
+                CategoryID = product.CategoryID,
+            }).ToList();
+            return result;
+        }
+
         public async Task UpdateProductAsync(UpdateProductDto updateProductDto)
         {
             var value = _mapper.Map<Product>(updateProductDto);
